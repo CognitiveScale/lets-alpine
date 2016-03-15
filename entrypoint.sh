@@ -7,14 +7,18 @@ set -euo pipefail
 MISSING=""
 
 [ -z "${DOMAIN}" ] && MISSING="${MISSING} DOMAIN"
-[ -z "${UPSTREAM}" ] && MISSING="${MISSING} UPSTREAM"
 [ -z "${EMAIL}" ] && MISSING="${MISSING} EMAIL"
+
+DOMAINS_STRING="--domain ${DOMAIN}"
+[ -z "${ALT_DOMAIN}" ] && DOMAINS_STRING="--domain ${ALT_DOMAIN} ${DOMAINS_STRING}"
 
 if [ "${MISSING}" != "" ]; then
   echo "Missing required environment variables:" >&2
   echo " ${MISSING}" >&2
   exit 1
 fi
+
+echo "DOMAINS_STRING=${DOMAINS_STRING}"
 
 # Default other parameters
 
@@ -38,8 +42,7 @@ fi
 # Initial certificate request, but skip if cached
 if [ ! -f /etc/letsencrypt/live/${DOMAIN}/fullchain.pem ]; then
   letsencrypt certonly \
-    --domain ${DOMAIN} \
-    --domain ${ALT_DOMAIN} \ 
+   ${DOMAINS_STRING} \
    --authenticator standalone \
     ${SERVER} \
     --email "${EMAIL}" --agree-tos
@@ -53,7 +56,7 @@ set -euo pipefail
 
 # Certificate reissue
 letsencrypt certonly --renew-by-default \
-  --domain "${DOMAIN}" \
+  ${DOMAINS_STRING}" \
   --authenticator webroot \
   --webroot-path /etc/letsencrypt/webrootauth/ ${SERVER} \
   --email "${EMAIL}" --agree-tos
