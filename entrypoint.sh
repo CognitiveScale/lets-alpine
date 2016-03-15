@@ -18,7 +18,9 @@ fi
 
 echo "DOMAIN_STRING=${DOMAIN_STRING}"
 
-USAGE="docker run --env DOMAIN=<registered-dns-or-public-ip> [--env DOMAIN_STRING=<DOMAIN_STRING>] 
+USAGE="docker run --env DOMAIN=<registered-dns-or-public-ip> \
+       [--env DOMAIN_STRING=<DOMAIN_STRING>] c12e/lets-alpine[:tag] \
+       -v /etc/letsencrypt:/etc/letsencrypt"
 
 # Default other parameters
 
@@ -57,7 +59,7 @@ set -euo pipefail
 # Certificate reissue
 letsencrypt certonly --renew-by-default \
   --domain ${DOMAIN} \
-  ${DOMAIN_STRING}" \
+  ${DOMAIN_STRING} \
   --authenticator webroot \
   --webroot-path /etc/letsencrypt/webrootauth/ ${SERVER} \
   --email "${EMAIL}" --agree-tos
