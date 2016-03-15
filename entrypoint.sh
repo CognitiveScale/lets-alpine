@@ -6,37 +6,36 @@ set -euo pipefail
 
 MISSING=""
 
-[ -z "${DOMAIN}" ] && MISSING="${MISSING} DOMAIN"
+[ -z "${DOMAIN_STRING}" ] && MISSING="${MISSING} DOMAIN_STRING"
 [ -z "${EMAIL}" ] && MISSING="${MISSING} EMAIL"
-
-DOMAINS_STRING="--domain ${DOMAIN}"
-[ -z "${ALT_DOMAIN}" ] && DOMAINS_STRING="--domain ${ALT_DOMAIN} ${DOMAINS_STRING}"
 
 if [ "${MISSING}" != "" ]; then
   echo "Missing required environment variables:" >&2
   echo " ${MISSING}" >&2
+  echo " ${USAGE}" >&2
   exit 1
 fi
 
 echo "DOMAINS_STRING=${DOMAINS_STRING}"
 
+USAGE="
 # Default other parameters
 
 SERVER=""
 [ -n "${STAGING:-}" ] && SERVER="--server https://acme-staging.api.letsencrypt.org/directory"
 
-# Generate strong DH parameters for nginx, if they don't already exist.
-if [ ! -f /etc/ssl/dhparams.pem ]; then
-  if [ -f /cache/dhparams.pem ]; then
-    cp /cache/dhparams.pem /etc/ssl/dhparams.pem
-  else
-    openssl dhparam -out /etc/ssl/dhparams.pem 2048
-    # Cache to a volume for next time?
-    if [ -d /cache ]; then
-      cp /etc/ssl/dhparams.pem /cache/dhparams.pem
-    fi
-  fi
-fi
+# Generate strong DH parameters, if they don't already exist.
+#if [ ! -f /etc/ssl/dhparams.pem ]; then
+#  if [ -f /cache/dhparams.pem ]; then
+#    cp /cache/dhparams.pem /etc/ssl/dhparams.pem
+#  else
+#    openssl dhparam -out /etc/ssl/dhparams.pem 2048
+#    # Cache to a volume for next time?
+#    if [ -d /cache ]; then
+#      cp /etc/ssl/dhparams.pem /cache/dhparams.pem
+#    fi
+#  fi
+#fi
 
 
 # Initial certificate request, but skip if cached
