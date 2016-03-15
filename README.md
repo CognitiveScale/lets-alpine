@@ -1,8 +1,8 @@
-# Let's Nginx
+# Let's Alpine
 
 *[dockerhub build](https://hub.docker.com/r/c12e/lets-alpine/)*
 
-Put browser-valid TLS termination in front of any Dockerized HTTP service with one command.
+Install domain validated certs from letsencrypt in a completely automated fashion
 
 Based on https://hub.docker.com/r/smashwilson/lets-nginx/
 But removing nginx for use cases where nginx proxying already exists and we only want the certs.
