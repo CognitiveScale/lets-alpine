@@ -34,22 +34,6 @@ if [ ! -f /etc/ssl/dhparams.pem ]; then
   fi
 fi
 
-#create temp file storage
-mkdir -p /var/cache/nginx
-chown nginx:nginx /var/cache/nginx
-
-mkdir -p /var/tmp/nginx
-chown nginx:nginx /var/tmp/nginx
-
-# Process templates
-for t in /templates/*
-do
-  dest="/etc/nginx/$(basename $t)"
-  echo "Rendering template of $dest"
-  sed -e "s/\${DOMAIN}/${DOMAIN}/g" \
-      -e "s/\${UPSTREAM}/${UPSTREAM}/" \
-      $t > $dest
-done
 
 # Initial certificate request, but skip if cached
 if [ ! -f /etc/letsencrypt/live/${DOMAIN}/fullchain.pem ]; then
@@ -79,9 +63,8 @@ letsencrypt certonly --renew-by-default \
 EOF
 chmod +x /etc/periodic/monthly/reissue
 
-# Kick off cron to reissue certificates as required
-# Background the process and log to stderr
-/usr/sbin/crond -f -d 8 &
+# move this outside of container
+# /usr/sbin/crond -f -d 8 &
 
 echo Ready
 # Launch nginx in the foreground
