@@ -16,7 +16,7 @@ if [ "${MISSING}" != "" ]; then
   exit 1
 fi
 
-echo "DOMAINS_STRING=${DOMAINS_STRING}"
+echo "DOMAIN_STRING=${DOMAIN_STRING}"
 
 USAGE="docker run "
 
@@ -42,7 +42,7 @@ SERVER=""
 # Initial certificate request, but skip if cached
 if [ ! -f /etc/letsencrypt/live/${DOMAIN}/fullchain.pem ]; then
   letsencrypt certonly \
-   ${DOMAINS_STRING} \
+   ${DOMAIN_STRING} \
    --authenticator standalone \
     ${SERVER} \
     --email "${EMAIL}" --agree-tos
@@ -56,7 +56,7 @@ set -euo pipefail
 
 # Certificate reissue
 letsencrypt certonly --renew-by-default \
-  ${DOMAINS_STRING}" \
+  ${DOMAIN_STRING}" \
   --authenticator webroot \
   --webroot-path /etc/letsencrypt/webrootauth/ ${SERVER} \
   --email "${EMAIL}" --agree-tos
