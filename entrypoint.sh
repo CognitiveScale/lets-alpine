@@ -6,7 +6,7 @@ set -euo pipefail
 
 MISSING=""
 
-[ -z "${DOMAIN_STRING}" ] && MISSING="${MISSING} DOMAIN_STRING"
+[ -z "${DOMAIN}" ] && MISSING="${MISSING} DOMAIN"
 [ -z "${EMAIL}" ] && MISSING="${MISSING} EMAIL"
 
 if [ "${MISSING}" != "" ]; then
@@ -18,7 +18,7 @@ fi
 
 echo "DOMAIN_STRING=${DOMAIN_STRING}"
 
-USAGE="docker run "
+USAGE="docker run --env DOMAIN=<registered-dns-or-public-ip> [--env DOMAIN_STRING=<DOMAIN_STRING>] 
 
 # Default other parameters
 
@@ -56,6 +56,7 @@ set -euo pipefail
 
 # Certificate reissue
 letsencrypt certonly --renew-by-default \
+  --domain ${DOMAIN} \
   ${DOMAIN_STRING}" \
   --authenticator webroot \
   --webroot-path /etc/letsencrypt/webrootauth/ ${SERVER} \
