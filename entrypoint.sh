@@ -18,7 +18,8 @@ fi
 
 echo "DOMAINS_STRING=${DOMAINS_STRING}"
 
-USAGE="
+USAGE="docker run "
+
 # Default other parameters
 
 SERVER=""
