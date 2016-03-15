@@ -61,8 +61,6 @@ letsencrypt certonly --renew-by-default \
   --webroot-path /etc/letsencrypt/webrootauth/ ${SERVER} \
   --email "${EMAIL}" --agree-tos
 
-# Reload nginx configuration to pick up the reissued certificates
-#/usr/sbin/nginx -s reload
 EOF
 chmod +x /etc/periodic/monthly/reissue
 
@@ -70,5 +68,3 @@ chmod +x /etc/periodic/monthly/reissue
 # /usr/sbin/crond -f -d 8 &
 
 echo Ready
-# Launch nginx in the foreground
-#/usr/sbin/nginx -g "daemon off;"

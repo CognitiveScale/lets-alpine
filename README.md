@@ -12,7 +12,7 @@ These certs can be shared by all docker containers running on the host.
 
 ```bash
 docker run --detach \
-  --name lets-nginx \
+  --name lets-alpine \
   --link backend:backend \
   --env EMAIL=me@email.com \
   --env DOMAIN=mydomain.horse \
@@ -35,7 +35,7 @@ Before you begin, you'll need:
 
 ## Usage
 
-Launch your backend container and note its name, then launch `smashwilson/lets-nginx` with the following parameters:
+launch `c12e/lets-alpine` with the following parameters:
 
  * `-e EMAIL=` your email address, used to register with letsencrypt.
  * `-e DOMAIN=` the domain name.
@@ -60,7 +60,7 @@ and then start the container with volume attachments:
 
 ```bash
 docker run --detach \
-  --name lets-nginx \
+  --name lets-alpine \
   --env EMAIL=me@email.com \
   --env DOMAIN=mydomain.horse \
   --env ALT_DOMAIN=myproxydomain.horse \
